@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10243a">
+  <title>ULTRA@503 Material Traceability</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+</head>
+<body>
+<header><div><strong>ULTRA@503</strong><span>Material Traceability & Handover</span></div><button id="signOutBtn" hidden>Sign out</button></header>
+<main>
+  <section id="authPanel" class="panel">
+    <h1>Sign in</h1>
+    <p>Use your company-issued account.</p>
+    <form id="authForm"><label>Email<input id="email" type="email" required autocomplete="username"></label>
+    <label>Password<input id="password" type="password" required autocomplete="current-password"></label>
+    <button type="submit">Sign in</button></form>
+    <p class="muted">User accounts must be created/invited in Supabase Auth by an administrator.</p>
+  </section>
+  <section id="profilePanel" class="panel" hidden>
+    <h1>Complete employee profile</h1>
+    <form id="profileForm"><label>Full name<input id="fullName" required></label>
+    <label>Employee ID No.<input id="employeeId" required></label><button>Save profile</button></form>
+  </section>
+  <section id="pendingPanel" class="panel" hidden><h1>Pending Role Assignment</h1><p>Your profile is saved, but an administrator must assign your role in Supabase Table Editor.</p></section>
+  <section id="appPanel" hidden>
+    <div class="welcome"><span id="whoami"></span><span id="roleBadge" class="badge"></span></div>
+    <nav id="tabs" class="tabs">
+      <button data-tab="dashboard" class="active">Dashboard / Search</button>
+      <button data-tab="po">PO Dashboard</button>
+      <button data-tab="new" id="newTab">New Route Card</button>
+      <button data-tab="urgent" id="urgentTab" hidden>Urgent / Top Priority</button>
+    </nav>
+    <section id="view-dashboard" class="view">
+      <h2>Search Route Cards</h2>
+      <div class="searchrow"><input id="searchInput" placeholder="Part, PO, UC Batch, Heat Batch, Route Card No."><button id="searchBtn">Search</button><button id="scanSearchBtn" class="secondary">Scan QR</button></div>
+      <div id="scanBox" hidden class="panel"><video id="camera" playsinline></video><canvas id="qrCanvas" hidden></canvas><button id="stopScan" class="secondary">Stop scanner</button></div>
+      <div id="searchResults"></div>
+      <h2>Awaiting My Receipt</h2><div id="myReceipts"></div>
+    </section>
+    <section id="view-po" class="view" hidden><h2>PO Dashboard</h2><div id="stageSummary"></div><div id="poList"></div></section>
+    <section id="view-new" class="view" hidden>
+      <h2>Register Route Card</h2><button id="scanNewBtn" class="secondary">Scan QR to prefill</button>
+      <form id="routeForm" class="gridform">
+        <label>Part Number *<input id="partNumber" required></label><label>Part Description<input id="partDescription"></label>
+        <label>PO Number *<input id="poNumber" required></label><label>PO Line No. *<input id="poLine" required></label>
+        <label>Customer<input id="customerName"></label><label>PO Quantity<input id="poQty" type="number" min="0"></label>
+        <label>UC Batch *<input id="ucBatch" required></label><label>Heat Batch<input id="heatBatch"></label>
+        <label>Route Card Quantity *<input id="routeQty" type="number" min="1" required></label><label>Route Card No. *<input id="routeCardNo" required></label>
+        <label class="wide">Raw QR payload<textarea id="qrPayload" rows="2"></textarea></label>
+        <button id="createRouteBtn" type="submit" class="wide">Create / Open Route Card</button>
+      </form>
+    </section>
+    <section id="view-urgent" class="view" hidden><h2>Urgent / Top Priority</h2><div id="urgentList"></div></section>
+    <section id="routeDetail" class="panel" hidden></section>
+  </section>
+  <div id="toast" role="status"></div>
+</main>
+<footer>ULTRA@503 • Internal material traceability</footer>
+<script src="./config.js"></script><script src="./app.js"></script>
+</body></html>
